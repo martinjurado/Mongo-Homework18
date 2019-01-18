@@ -8,9 +8,6 @@ var cheerio = require("cheerio");
 // Require models
 var db = require("./models")
 
-// Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/buzzfeed_db", { useNewUrlParser: true });
-
 var PORT = 3000;
 
 // Initialize Express
@@ -29,37 +26,67 @@ app.use(express.json());
 // Make a public static folder
 app.use(express.static("public"));
 
+// Connect to the Mongo DB
+mongoose.connect("mongodb://localhost/elite_db", { useNewUrlParser: true });
+
 // Routes
 
 // get route for scraping the buzzfeed website
 app.get("/scrape", function (req, res) {
-    axios.get("https://www.buzzfeed.com/").then(function (response) {
+    axios.get("https://www.elitedaily.com/").then(function (response) {
 
         var $ = cheerio.load(response.data);
 
-        $("div.xs-px05").each(function (i, element) {
+        $(".fL").each(function (i, element) {
             
             // Empty Object to save the data scraped
             var result = {};
 
-            // Add title and subtitle 
-            result.title = $(this).children("h2").text();
-            result.subtitle = $(this).children("p").text();
+            // Pic source 
+            // $(this).find(".gg .je").each(function(i, element){
+            //     result.source = $(this).attr("img", "src");
+            // });
+
+
+            // Title of article
+            $(this).find(".gg .fN .fZ").each(function(i, element){
+                result.title = $(this).text();
+            });
+
+            // Author 
+            $(this).find(".gg .fN .f_").each(function(i, element){
+                result.subtitle = $(this).text();
+            });
+            
+            // Link to article
+            result.link = $(this).attr("href");
             
             // logs scraped data
             console.log(result);
+
+            db.Article.create(result)
+            .then(function(dbArticle){
+                console.log(dbArticle);
+            })
+            .catch(function(err) {
+                console.log(err)
+            });
             
-            // db.Article comes out undefined
-            // db.Article.create(result)
-            // .then(function(dbArticle){
-            //     console.log(dbArticle);
-            // })
-            // .catch(function(err) {
-            //     console.log(err)
-            // });
         });
         // Send message to client
         res.send("Scrape Complete!");
+    });
+});
+
+app.get("/showall", function(req, res) {
+
+    // grabs all articles
+    db.Article.find({})
+    .then(function(dbArticle){
+        res.json(dbArticle);
+    })
+    .catch(function(err){
+        res.json(err);
     });
 });
 

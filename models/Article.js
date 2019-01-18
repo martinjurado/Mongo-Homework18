@@ -6,6 +6,11 @@ var Schema = mongoose.Schema;
 // Create a new schema
 var ArticleSchema = new Schema ({
 
+    // source:{
+    //     type: String,
+    //     required: true
+    // },
+
     title: {
         type: String,
         required: true
@@ -14,12 +19,12 @@ var ArticleSchema = new Schema ({
     subtitle: {
         type: String,
         required: true
-    }
+    },
 
-    // link: {
-    //     type: String,
-    //     required: true
-    // }
+    link: {
+        type: String,
+        required: true
+    }
 
     // note: {
     //     type: Schema.Types.ObjectId,
