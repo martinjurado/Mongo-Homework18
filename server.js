@@ -1,35 +1,27 @@
 var express = require("express");
 var mongoose = require("mongoose");
 
-// Scraping Tools
 var axios = require("axios");
 var cheerio = require("cheerio");
 
-// Require models
 var db = require("./models")
 
 var PORT = 3000;
 
-// Initialize Express
 var app = express();
 
-// Handlebars 
+
 var exphbs = require("express-handlebars");
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
-// Configure middleware
-
-// Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// Make a public static folder
 app.use(express.static("public"));
 
-// Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/elite_db", { useNewUrlParser: true });
 
-// Routes
+mongoose.connect("mongodb://localhost/elite_db", { useNewUrlParser: true });
+// mongoose.connect(MONGODB_URI);
 
 // Home page
 app.get('/', function (req, res) {
@@ -41,7 +33,7 @@ app.get("/saved", function(req, res) {
     res.render("savedarticles");
 });
 
-// Get route for scraping the buzzfeed website
+// Get route for scraping the elite daily website
 app.get("/scrape", function (req, res) {
     axios.get("https://www.elitedaily.com/").then(function (response) {
 
@@ -65,7 +57,7 @@ app.get("/scrape", function (req, res) {
             // Link to article
             result.link = $(this).attr("href");
             
-            // logs scraped data
+        
             console.log(result);
 
             db.Article.create(result)
@@ -77,7 +69,7 @@ app.get("/scrape", function (req, res) {
             });
             
         });
-        // Send message to client
+        
         res.send("Scrape Complete!");
     });
 });
@@ -85,7 +77,6 @@ app.get("/scrape", function (req, res) {
 // display all articles
 app.get("/showall", function(req, res) {
 
-    // grabs all articles
     db.Article.find({})
     .then(function(dbArticle){
         res.json(dbArticle);
@@ -95,10 +86,9 @@ app.get("/showall", function(req, res) {
     });
 });
 
-// shows article for specific id
+// display article for specific id
 app.get("/showall/:id", function(req, res) {
     
-    // get id for each article
     var id = req.params.id;
     
     db.Article.findOne({_id: id})
@@ -123,7 +113,7 @@ app.get("/showall/:id", function(req, res) {
     });
 });
 
-// Shows all saved articles
+// displays all saved articles
 app.get("/showsaved", function(req, res) {
     
     db.savedArticle.find({})
@@ -133,14 +123,23 @@ app.get("/showsaved", function(req, res) {
     .catch(function(err){
         res.json(err);
     });
-})
+});
 
+// Path to delete all documents from collection
+app.delete("/deleteall", function(req, res){
+
+    db.savedArticle.remove({}, function(err){
+
+    });
+});
+
+// Path to delete a document from collection
 app.delete("/deleteart/:id", function(req, res){
     
     var artID = req.params.id;
     db.savedArticle.findByIdAndDelete(artID, function(){
         res.render("savedarticles")
-    })
+    });
 });
 
 // // posts article saved to savedarticles.handlebars

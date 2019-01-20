@@ -1,14 +1,41 @@
-{{!-- header --}}
 <h1 id="head">Mongo Scraper <img src="https://www.logolynx.com/images/logolynx/32/320f3acdbdc0922ffe06b6fc164523cc.jpeg"
-        id="pic"> edition</h1>
+    id="pic"> edition</h1>
 
-{{!-- Nav --}}
 <nav id="nav">
-    <button type="button" class="btn btn-secondary" id="clear">Clear Articles</button>
-    <button type="button" class="btn btn-secondary" id="clear"><a href="/" class="saveartbtn">Home</a></button>
+  <button type="button" class="btn btn-secondary" id="clearBtn">Clear Articles</button>
+  <button type="button" class="btn btn-secondary"><a href="/" class="saveartbtn">Home</a></button>
 </nav>
 
-{{!-- Div box containing articles --}}
 <div id="savedcontentbox">
-    <div id="buttondump"></div>
+  <div id="buttondump"></div>
+</div>
+
+{{!-- Modal --}}
+<div id="notemodal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"></h4>
+        <button type="button" id="closeBtn" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      {{!-- BODY --}}
+      <div class="modal-body text-center">
+        
+        <form class="note-form">
+          <div class="form-note">
+            <h3>Add a New Note</h3>    
+            <input type="text" name="articleNote" id="artNote" required="required">
+            <br>
+          </div>
+          <br>
+          <button type="submit" id="submitBtn">Submit</button>
+        </form>
+
+      </div>
+      <div class="modal-footer">
+        <button id="modalclosebutton" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
