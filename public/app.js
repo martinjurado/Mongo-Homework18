@@ -73,7 +73,7 @@ function showsavedArticles() {
 
         for (var i = 0; i < data.length; i++) {
 
-            // Loops thru all saved articles and append it to the content box
+            // Loops all saved articles and append it to the content box
             $("#savedcontentbox").append("<div id='wrapper'>" + "<br>" + "<br>" + data[i].title + "<br>" + "<br>" + data[i].subtitle
                 + "<br>" + "<a href='" + "https://www.elitedaily.com" + data[i].link + "'" + 'target="blank"' + "'>"
                 + "Read More" + "</a>" + "<br>" + "<br>"

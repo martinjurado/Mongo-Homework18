@@ -1,9 +1,7 @@
 var mongoose = require("mongoose");
 
-// save a reference to the schema constructor
 var Schema = mongoose.Schema;
 
-// Create a new schema
 var ArticleSchema = new Schema ({
 
     title: {
@@ -22,7 +20,6 @@ var ArticleSchema = new Schema ({
     }
 });
 
-// Creates our model from the above schema, using mongoose's model method
 var Article = mongoose.model("Article", ArticleSchema);
 
 module.exports = Article;

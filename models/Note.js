@@ -20,7 +20,6 @@ var NoteSchema = new Schema ({
     }
 });
 
-// Creates our model from the above schema, using mongoose's model method
 var Article = mongoose.model("Notes", NoteSchema);
 
 module.exports = Article;
