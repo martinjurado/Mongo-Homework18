@@ -6,6 +6,10 @@ var cheerio = require("cheerio");
 
 var db = require("./models")
 
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+
+mongoose.connect(MONGODB_URI);
+
 var PORT = 3000;
 
 var app = express();
@@ -20,8 +24,8 @@ app.use(express.json());
 app.use(express.static("public"));
 
 
-mongoose.connect("mongodb://localhost/elite_db", { useNewUrlParser: true });
-// mongoose.connect(MONGODB_URI);
+mongoose.connect("mongodb://localhost:27017/elite_db", { useNewUrlParser: true });
+
 
 // Home page
 app.get('/', function (req, res) {
